@@ -15,7 +15,9 @@
   "author": "Vamshi Krishna Nandyala",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.17.1"
+    "ejs": "^3.1.5",
+    "express": "^4.17.1",
+    "mongoose": "^5.10.7"
   },
   "devDependencies": {
     "chai": "^4.2.0",

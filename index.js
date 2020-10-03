@@ -1,9 +1,12 @@
 const express = require('express')
+require('./utils/db.config')
 const app = express()
+
+app.set('view engine', 'ejs')
 
 app.get('/', (req, res) => {
     try {
-        return res.send('Hello World')
+        return res.render('index')
     } catch (error) {
         return res.status(500).send('Hello World')
     }

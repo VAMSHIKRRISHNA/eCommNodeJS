@@ -17,3 +17,14 @@ describe('Test server connectivity', () => {
             })
     })
 })
+
+describe('Make sure /register fails on insufficient data', () => {
+    it('Should return 400', (done) => {
+        chai.request(app)
+            .post('/register')
+            .end((err, res) => {
+                res.should.have.status(400)
+                done()
+            })
+    })
+})

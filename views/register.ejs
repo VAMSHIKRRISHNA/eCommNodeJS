@@ -2,39 +2,77 @@
 <html lang="en">
 
 <head>
-    <%- include('includes/header'); %>
+  <%- include('includes/header'); %>
 </head>
-<body>
-    <%- include('includes/nav'); %>
-        <div class="container mt-5">
-            <h1>Registration</h1>
-            <% if (message) { %>
-                <div class="alert alert-success" role="alert">
-                    <%= message %>
-                </div>
-            <% } %>
-            <form method="post" action="register">
-                <div class="form-group">
-                    <label for="name">Name<sup class="text-danger">*</sup></label>
-                    <input type="text" required class="form-control" id="name" name="name" placeholder="Enter name">
-                </div>
-                <div class="form-group">
-                    <label for="email">Email address<sup class="text-danger">*</sup></label>
-                    <input type="email" required class="form-control" name="email" id="email" aria-describedby="emailHelp" placeholder="Enter email">
-                    <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
-                </div>
 
-                <div class="form-group">
-                    <label for="password">Password<sup class="text-danger">*</sup></label>
-                    <input type="password" required class="form-control" name="password" id="password" placeholder="Password">
-                </div>
-                <div class="form-check">
-                    <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                    <label class="form-check-label" for="exampleCheck1">Check me out</label>
-                </div>
-                <button type="submit" class="btn btn-primary">Submit</button>
-            </form>
+<body>
+  <%- include('includes/nav'); %>
+    <div class="container mt-5">
+      <h1>Registration</h1>
+      <% if (message.type) { %>
+        <div class="alert alert-<%= message.type === 'error' ? 'danger' : 'success' %>" role="alert">
+          <%= message.body %>
         </div>
+        <% } %>
+          <form method="post" action="register">
+            <div class="form-group">
+              <label for="name">Name
+                <sup class="text-danger">*</sup>
+              </label>
+              <input type="text" id="name" name="name" placeholder="Enter name" class="form-control <%= error.name ? 'is-invalid' : 'is-valid' %>"
+                value="<%= formData.name %>" minlength="2" maxlength="64" required>
+              <% if (error.name) { %>
+                <div class="invalid-feedback">
+                  <%= error.name[0] %>
+                </div>
+                <% } %>
+            </div>
+            <div class="form-group">
+              <label for="email">Email address
+                <sup class="text-danger">*</sup>
+              </label>
+              <input type="email" name="email" id="email" aria-describedby="emailHelp" placeholder="Enter email" class="form-control <%= error.email ? 'is-invalid' : 'is-valid' %>"
+                value="<%= formData.email %>" maxlength="128" required>
+              <% if (error.email) { %>
+                <div class="invalid-feedback">
+                  <%= error.email[0] %>
+                </div>
+                <% } %>
+            </div>
+
+            <div class="form-group">
+              <label for="password">Password
+                <sup class="text-danger">*</sup>
+              </label>
+              <input type="password" name="password" id="password" placeholder="Password" class="form-control <%= error.password ? 'is-invalid' : 'is-valid' %>"
+                value="<%= formData.password %>" required>
+              <% if (error.password) { %>
+                <div class="invalid-feedback">
+                  <%= error.password[0] %>
+                </div>
+                <% } %>
+            </div>
+
+            <div class="form-group">
+              <label for="repeat_password">Password
+                <sup class="text-danger">*</sup>
+              </label>
+              <input type="repeat_password" name="repeat_password" id="repeat_password" placeholder="Repeat Password" class="form-control <%= error.repeat_password ? 'is-invalid' : 'is-valid' %>"
+                required>
+              <% if (error.repeat_password) { %>
+                <div class="invalid-feedback">
+                  <%= error.repeat_password[0] %>
+                </div>
+                <% } %>
+            </div>
+
+            <div class="form-check">
+              <input type="checkbox" class="form-check-input" id="exampleCheck1">
+              <label class="form-check-label" for="exampleCheck1">Check me out</label>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+          </form>
+    </div>
 </body>
 
 </html>

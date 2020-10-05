@@ -14,11 +14,11 @@ app.set('view engine', 'ejs')
 app.use('/register', authRoutes)
 
 app.get('/', (req, res) => {
-    try {
-        return res.render('index')
-    } catch (error) {
-        return res.status(500).send(error)
-    }
+  try {
+    return res.render('index')
+  } catch (error) {
+    return res.status(500).send(error)
+  }
 })
 
 app.listen(3000, () => {

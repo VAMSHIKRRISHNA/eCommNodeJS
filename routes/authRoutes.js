@@ -3,10 +3,12 @@ const router = express.Router()
 const { addUser } = require('../modules/users/service/userService')
 const { registerSchema } = require('../modules/users/validations/registerValidation')
 const { joiErrorFormatter, mongooseErrorFormatter } = require('../utils/validationFormatter')
+const guestMiddleware = require('../middlewares/guestMiddleware')
+const passport = require('passport')
 /**
  * Shows user registration view
  */
-router.get('/', (req, res) => {
+router.get('/register', guestMiddleware, (req, res) => {
   try {
     return res.render('register', { message: {}, error: {}, formData: {} })
   } catch (error) {
@@ -18,7 +20,7 @@ router.get('/', (req, res) => {
 /**
  * Creates user registration
  */
-router.post('/', async (req, res) => {
+router.post('/register', guestMiddleware, async (req, res) => {
   try {
     const validationResponse = registerSchema.validate(req.body, {
       abortEarly: false
@@ -52,6 +54,38 @@ router.post('/', async (req, res) => {
       error: mongooseErrorFormatter(error),
       formData: req.body
     })
+  }
+})
+
+/**
+ * Shows user login view
+ */
+router.get('/login', guestMiddleware, (req, res) => {
+  try {
+    return res.render('login', { message: {}, error: {}, formData: {} })
+  } catch (error) {
+    console.error(error);
+    return res.status(400).render('login', { message: { type: 'error', body: 'Something went wrong' }, error: {}, formData: {} })
+  }
+})
+
+/**
+ * Shows user login view
+ */
+router.post('/login', guestMiddleware, passport.authenticate('local', {
+  successRedirect: '/',
+  failureRedirect: '/login'
+}), (req, res) => {
+  try {
+    return res.render('login', {
+      message: {
+        type: 'success',
+        body: 'Login successful'
+      }, error: {}, formData: {}
+    })
+  } catch (error) {
+    console.error(error);
+    return res.status(400).render('login', { message: { type: 'error', body: 'Something went wrong' }, error: {}, formData: {} })
   }
 })
 
